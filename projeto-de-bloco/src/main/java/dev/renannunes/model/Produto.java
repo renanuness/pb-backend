@@ -1,16 +1,28 @@
 package dev.renannunes.model;
 
+import com.opencsv.bean.CsvBindByName;
+
 import java.math.BigDecimal;
 
 public class Produto {
+    @CsvBindByName(column = "IDPRODUTO")
     private Integer idProduto;
+    @CsvBindByName(column = "NOME")
     private String nome;
+    @CsvBindByName(column = "DESCRICAO")
     private String descricao;
+    @CsvBindByName(column = "CATEGORIA")
     private String categoria;
+    @CsvBindByName(column = "PRECO")
     private BigDecimal preco;
+    @CsvBindByName(column = "TEMPOPREPARO")
     private Integer tempoPreparo;
+    @CsvBindByName(column = "DISPONIVEL")
     private Boolean disponivel;
+    @CsvBindByName(column = "IMAGEM")
     private String imagem;
+
+    public Produto(){}
 
     public Produto(Integer idProduto, String nome, String descricao, String categoria, BigDecimal preco, Integer tempoPreparo, Boolean disponivel, String imagem) {
         this.idProduto = idProduto;
@@ -44,6 +56,6 @@ public class Produto {
         sb.append(tempoPreparo);
         sb.append("\t");
 
-        return toString();
+        return sb.toString();
     }
 }

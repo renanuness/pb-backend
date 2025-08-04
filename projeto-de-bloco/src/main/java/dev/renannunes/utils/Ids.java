@@ -6,6 +6,10 @@ public class Ids {
     private Integer idPedido ;
     private Integer idItem;
 
+    public Ids() {
+        // Default constructor needed for OpenCSV
+    }
+
     public Ids(Integer idCliente, Integer idProduto, Integer idPedido, Integer idItem){
 
         this.idCliente = idCliente;

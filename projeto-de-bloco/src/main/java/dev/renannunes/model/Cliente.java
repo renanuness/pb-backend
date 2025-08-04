@@ -1,17 +1,32 @@
 package dev.renannunes.model;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
+
 import java.time.LocalDateTime;
 
 public class Cliente {
+    @CsvBindByName(column = "IDCLIENTE")
     private Integer idCliente;
+    @CsvBindByName(column = "NOME")
     private String nome;
+    @CsvBindByName(column = "CPF")
     private String cpf;
+    @CsvBindByName(column = "EMAIL")
     private String email;
+    @CsvBindByName(column = "TELEFONE")
     private String telefone;
+    @CsvBindByName(column = "SENHA")
     private String senha;
+    @CsvBindByName(column = "ENDERECOENTREGA")
     private String enderecoEntrega;
+    @CsvBindByName(column = "DATACADASTRO")
+    @CsvDate("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
     private LocalDateTime dataCadastro;
+    @CsvBindByName(column = "ATIVO")
     private Boolean ativo;
+
+    public Cliente(){}
 
     public Cliente(Integer idCliente, String nome, String cpf, String email, String telefone, String senha, String enderecoEntrega, LocalDateTime dataCadastro, Boolean ativo) {
         this.idCliente = idCliente;
@@ -23,6 +38,10 @@ public class Cliente {
         this.enderecoEntrega = enderecoEntrega;
         this.dataCadastro = dataCadastro;
         this.ativo = ativo;
+    }
+
+    public Integer getId(){
+        return idCliente;
     }
 
     public String getEndereco() {
@@ -38,11 +57,14 @@ public class Cliente {
         sb.append(cpf);
         sb.append("\t");
         sb.append(email);
-        sb.append("\t");
+        sb.append("\t\n");
 
         return sb.toString();
     }
 
+    public void setDataCadastro(String dataString) {
+        this.dataCadastro = LocalDateTime.parse(dataString);
+    }
 }
 
 

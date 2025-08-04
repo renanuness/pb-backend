@@ -10,6 +10,7 @@ import dev.renannunes.model.Pedido;
 import dev.renannunes.model.Produto;
 import dev.renannunes.utils.Ids;
 
+import javax.sound.midi.SysexMessage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -48,6 +49,8 @@ public class App {
             System.out.println("2 - Cadastrar Cliente");
             System.out.println("3 - Listar Produto");
             System.out.println("4 - Cadastrar Produto");
+            System.out.println("5 - Listar Pedidos");
+            System.out.println("6 - Cadastrar Pedido");
             System.out.println("0 - SAIR");
 
 
@@ -69,6 +72,15 @@ public class App {
                     break;
                 case 4:
                     CadastrarProduto();
+                case 5:
+                    ListarPedidos();
+                    break;
+                case 6:
+                    CadastrarPedido();
+                    break;
+//                case 7:
+//                    DetalharPedido();
+                    //break;
                 default:
                     System.out.printf("Valor inválido");
             }
@@ -136,6 +148,31 @@ public class App {
             System.out.printf(cliente.toString());
         }
     }
+
+    public static Cliente SelecionarCliente(){
+        var id = 1;
+        while (true){
+            try {
+                ListarClientes();
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Digite o id do cliente: ");
+                id = sc.nextInt();
+                break;
+            }catch(Exception ex){
+                System.out.println("Valor inválido.");
+            }
+        }
+
+        for(var cliente: Clientes){
+            if(cliente.getId() == id){
+                return cliente;
+            }
+        }
+
+        System.out.println("ID não encontrado.");
+        return null;
+    }
+
     public static void CadastrarProduto(){
         System.out.println("==========CADASTRO DE PRODUTO==========");
         var nome = ObterCampo("Digite o nome do produto: ");
@@ -156,8 +193,37 @@ public class App {
             System.out.println(produto.toString());
         }
     }
-    public static Pedido CadastrarPedido(Cliente cliente){
+
+    public static Produto SelecionarProduto(){
+        var id = 1;
+        while (true){
+            try {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Digite o id do produto: ");
+                id = sc.nextInt();
+                break;
+            }catch(Exception ex){
+                System.out.println("Valor inválido.");
+            }
+        }
+
+        for(var produto: Produtos){
+            if(produto.getId() == id){
+                return produto;
+            }
+        }
+
+        System.out.println("ID não encontrado.");
+        return null;
+    }
+
+    public static void CadastrarPedido(){
         Scanner sc = new Scanner(System.in);
+
+        var cliente = SelecionarCliente();
+        if(cliente == null){
+            return;
+        }
 
         var endereco = cliente.getEndereco();
         System.out.println("Deseja utilizar o endereço previamente cadastrado? S/N");
@@ -169,24 +235,38 @@ public class App {
         }
 
         var observacoes = ObterCampo("Observações do pedido: ");
-
-        var itens = new ArrayList<Produto>();
-        var pedido = new Pedido(cliente, LocalDateTime.now(), "CONFIRMADO", "CRÉDITO", endereco, observacoes);
-        while(true){
-            // Listar todos os produtos;
-            // Selecionar um produto
-            // Se existe, aumentar quantidade
-//            var produto = SelecionarProduto();
+        var pedido = new Pedido(Ids.getIdPedido(), cliente, LocalDateTime.now(), "CONFIRMADO", "CRÉDITO", endereco, observacoes);
+        Ids.incrementIdPedido();
+        var sair = false;
+        while(!sair){
+            ListarProdutos();
+            var produto = SelecionarProduto();
+            if(produto == null){
+                continue;
+            }
 
             var observacoesProduto = ObterCampo("Observações do produto: ");
-//            pedido.adicionarItem(produto, observacoesProduto);
+            pedido.adicionarItem(produto, observacoesProduto, Ids.getIdItem());
+            Ids.incrementIdItem();
+
+            System.out.println("1 - Inserir produto");
+            System.out.println("2 - Finalizar pedido");
+            if(sc.nextInt() == 2){
+                sair = true;
+                continue;
+            }
+
+            Pedidos.add(pedido);
+            ItensPedidos.addAll(pedido.getItens());
         }
 
     }
 
-//    private static Produto SelecionarProduto() {
-//
-//    }
+    public static void ListarPedidos(){
+        for (var pedido: Pedidos){
+            System.out.println(pedido.toString());
+        }
+    }
 
     public static String ObterEValidarCampo(String campo, Pattern validacao, String mensagemErro){
         while (true) {
