@@ -4,9 +4,9 @@ import com.opencsv.bean.CsvBindByName;
 
 import java.math.BigDecimal;
 
-public class Produto {
+public class Product {
     @CsvBindByName(column = "IDPRODUTO")
-    private Integer idProduto;
+    private Integer id;
     @CsvBindByName(column = "NOME")
     private String nome;
     @CsvBindByName(column = "DESCRICAO")
@@ -22,10 +22,10 @@ public class Produto {
     @CsvBindByName(column = "IMAGEM")
     private String imagem;
 
-    public Produto(){}
+    public Product(){}
 
-    public Produto(Integer idProduto, String nome, String descricao, String categoria, BigDecimal preco, Integer tempoPreparo, Boolean disponivel, String imagem) {
-        this.idProduto = idProduto;
+    public Product(Integer id, String nome, String descricao, String categoria, BigDecimal preco, Integer tempoPreparo, Boolean disponivel, String imagem) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -40,12 +40,12 @@ public class Produto {
     }
 
     public Integer getId() {
-        return idProduto;
+        return id;
     }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(idProduto);
+        sb.append(id);
         sb.append("\t");
         sb.append(nome);
         sb.append("\t");

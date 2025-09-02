@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pedido {
-    @CsvBindByName(column = "IDPEDIDO")
-    private Integer idPedido;
+public class Order {
+    @CsvBindByName(column = "ID")
+    private Integer id;
     @CsvIgnore
-    private Cliente cliente;
+    private User cliente;
     @CsvBindByName(column = "DATAPEDIDO")
     @CsvDate("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
     private LocalDateTime dataPedido;
@@ -30,9 +30,9 @@ public class Pedido {
     @CsvIgnore
     private List<ItemPedido> itens;
 
-    public Pedido(){}
-    public Pedido(Integer idPedido, Cliente cliente, LocalDateTime dataPedido, String status, String formaPagamento, String enderecoEntrega, String observacoes) {
-        this.idPedido = idPedido;
+    public Order(){}
+    public Order(Integer id, User cliente, LocalDateTime dataPedido, String status, String formaPagamento, String enderecoEntrega, String observacoes) {
+        this.id = id;
         this.cliente = cliente;
         this.dataPedido = dataPedido;
         this.status = status;
@@ -42,7 +42,7 @@ public class Pedido {
         itens = new ArrayList<>();
     }
 
-    public void adicionarItem(Produto produto, String observacoes, Integer idItem){
+    public void adicionarItem(Product produto, String observacoes, Integer idItem){
         for(var item : itens){
             if(item.getIdProduto() == produto.getId()){
                 item.incrementarQuantidade();
@@ -50,7 +50,7 @@ public class Pedido {
             }
         }
 
-        var item = new ItemPedido(idItem, idPedido, produto.getId(), 1, produto.getPreco(), observacoes);
+        var item = new ItemPedido(idItem, id, produto.getId(), 1, produto.getPreco(), observacoes);
         itens.add(item);
     }
     public void calcularTotal() {
@@ -60,7 +60,7 @@ public class Pedido {
     }
 
     public Integer getId() {
-        return idPedido;
+        return id;
     }
 
     public List<ItemPedido> getItens(){
@@ -70,7 +70,7 @@ public class Pedido {
     public String toString(){
         calcularTotal();
         StringBuilder sb = new StringBuilder();
-        sb.append(idPedido);
+        sb.append(id);
         sb.append("\t");
         sb.append(valorTotal);
         sb.append("\t");

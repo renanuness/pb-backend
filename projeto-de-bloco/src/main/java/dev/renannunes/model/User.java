@@ -5,9 +5,9 @@ import com.opencsv.bean.CsvDate;
 
 import java.time.LocalDateTime;
 
-public class Cliente {
+public class User {
     @CsvBindByName(column = "IDCLIENTE")
-    private Integer idCliente;
+    private Integer id;
     @CsvBindByName(column = "NOME")
     private String nome;
     @CsvBindByName(column = "CPF")
@@ -26,10 +26,10 @@ public class Cliente {
     @CsvBindByName(column = "ATIVO")
     private Boolean ativo;
 
-    public Cliente(){}
+    public User(){}
 
-    public Cliente(Integer idCliente, String nome, String cpf, String email, String telefone, String senha, String enderecoEntrega, LocalDateTime dataCadastro, Boolean ativo) {
-        this.idCliente = idCliente;
+    public User(Integer id, String nome, String cpf, String email, String telefone, String senha, String enderecoEntrega, LocalDateTime dataCadastro, Boolean ativo) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -41,7 +41,7 @@ public class Cliente {
     }
 
     public Integer getId(){
-        return idCliente;
+        return id;
     }
 
     public String getEndereco() {
@@ -50,7 +50,7 @@ public class Cliente {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(idCliente);
+        sb.append(id);
         sb.append("\t");
         sb.append(nome);
         sb.append("\t");

@@ -4,13 +4,11 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import dev.renannunes.model.Cliente;
+import dev.renannunes.model.User;
 import dev.renannunes.model.ItemPedido;
-import dev.renannunes.model.Pedido;
-import dev.renannunes.model.Produto;
+import dev.renannunes.model.Order;
+import dev.renannunes.model.Product;
 import dev.renannunes.utils.Ids;
-
-import javax.sound.midi.SysexMessage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,14 +17,11 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-/**
- * Hello world!
- */
 public class App {
     public static Ids Ids;
-    public static List<Produto> Produtos;
-    public static List<Cliente> Clientes;
-    public static List<Pedido> Pedidos;
+    public static List<Product> Produtos;
+    public static List<User> Clientes;
+    public static List<Order> Pedidos;
     public static List<ItemPedido> ItensPedidos;
 
     public static final String produtosFilename = "produtos.csv";
@@ -36,9 +31,9 @@ public class App {
 
     public static void main(String[] args) {
         LerIds();
-        Produtos = LerCsv(produtosFilename, Produto.class);
-        Clientes = LerCsv(clientesFilename, Cliente.class);
-        Pedidos = LerCsv(pedidosFilename, Pedido.class);
+        Produtos = LerCsv(produtosFilename, Product.class);
+        Clientes = LerCsv(clientesFilename, User.class);
+        Pedidos = LerCsv(pedidosFilename, Order.class);
         ItensPedidos = LerCsv(itensPedidosFilename, ItemPedido.class);
 
         var sair = false;
@@ -78,19 +73,11 @@ public class App {
                 case 6:
                     CadastrarPedido();
                     break;
-//                case 7:
-//                    DetalharPedido();
-                    //break;
                 default:
                     System.out.printf("Valor inválido");
             }
         }
-        //Listar produtos
-        //Selecionar produtos
 
-        // Criar pedido
-        // Listar pedidos
-        // Detalhar pedido
         SalvarCsv(Produtos, produtosFilename);
         SalvarCsv(Pedidos, pedidosFilename);
         SalvarCsv(Clientes, clientesFilename);
@@ -138,7 +125,7 @@ public class App {
         var dataCadstro = LocalDateTime.now();
         var ativo = true;
 
-        var cliente = new Cliente(Ids.getIdCliente(), nome, cpf, email, telefone, senha, endereco, dataCadstro, ativo);
+        var cliente = new User(Ids.getIdCliente(), nome, cpf, email, telefone, senha, endereco, dataCadstro, ativo);
         Ids.incrementIdCliente();
         Clientes.add(cliente);
     }
@@ -149,7 +136,7 @@ public class App {
         }
     }
 
-    public static Cliente SelecionarCliente(){
+    public static User SelecionarCliente(){
         var id = 1;
         while (true){
             try {
@@ -183,7 +170,7 @@ public class App {
         var disponivel = true;
         var imagem = "https://img.freepik.com/psd-gratuitas/um-prato-de-frango-assado-e-um-banquete-delicioso_632498-25445.jpg?semt=ais_hybrid&w=740";
 
-        var produto = new Produto(Ids.getIdProduto(), nome, descricao, categoria, preco, tempoPreparo, disponivel, imagem);
+        var produto = new Product(Ids.getIdProduto(), nome, descricao, categoria, preco, tempoPreparo, disponivel, imagem);
         Ids.incrementIdProduto();
         Produtos.add(produto);
     }
@@ -194,7 +181,7 @@ public class App {
         }
     }
 
-    public static Produto SelecionarProduto(){
+    public static Product SelecionarProduto(){
         var id = 1;
         while (true){
             try {
@@ -235,7 +222,7 @@ public class App {
         }
 
         var observacoes = ObterCampo("Observações do pedido: ");
-        var pedido = new Pedido(Ids.getIdPedido(), cliente, LocalDateTime.now(), "CONFIRMADO", "CRÉDITO", endereco, observacoes);
+        var pedido = new Order(Ids.getIdPedido(), cliente, LocalDateTime.now(), "CONFIRMADO", "CRÉDITO", endereco, observacoes);
         Ids.incrementIdPedido();
         var sair = false;
         while(!sair){
